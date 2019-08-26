@@ -1,8 +1,8 @@
 Package: sleepwalk
 Type: Package
 Title: Interactively Explore Dimension-Reduced Embeddings
-Version: 0.1.0
-Date: 2019-04-01
+Version: 0.2.0
+Date: 2019-08-26
 Authors@R: c(
     person( "Svetlana", "Ovchinnikova", role=c("aut","cre"), 
        email = "s.ovchinnikova@zmbh.uni-heidelberg.de" ),
@@ -19,9 +19,9 @@ RoxygenNote: 6.1.1
 URL: https://anders-biostat.github.io/sleepwalk/
 BugReports: https://github.com/anders-biostat/sleepwalk/issues
 NeedsCompilation: no
-Packaged: 2019-04-03 14:34:55 UTC; tyranchik
+Packaged: 2019-08-26 13:31:39 UTC; tyranchick
 Author: Svetlana Ovchinnikova [aut, cre],
   Simon Anders [aut]
 Maintainer: Svetlana Ovchinnikova <s.ovchinnikova@zmbh.uni-heidelberg.de>
 Repository: CRAN
-Date/Publication: 2019-04-04 15:10:03 UTC
+Date/Publication: 2019-08-26 14:50:03 UTC

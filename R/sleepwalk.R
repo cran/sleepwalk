@@ -67,10 +67,15 @@
 #' @param on_selection a callback function that is called every time the user selects a group of points in
 #' the web browser. From the \code{sleepwalk} app it gets two arguments: The first one is a vector of indices of
 #' all the selected points and the second one is an index of an embedding from where the points were selected.
+#' @param mode defines whether to use Canvas or SVG to display points. Using Canvas is faster and allows to plot 
+#' more points simultaneously, yet we currently consider SVG mode to be more stable and vigorously tested. In future
+#' versions SVG mode will be deprecated. Must be one of \code{canvas} or \code{svg}.
 #' 
 #' @return None.
 #' 
 #' @author Simon Anders, Svetlana Ovchinnikova
+#' 
+#' @references \url{https://doi.org/10.1101/603589}
 #'
 #' @examples 
 #' #generate cockscrew-shaped 3D data with 3 additional noisy dimensions
@@ -105,9 +110,10 @@
 #' @export
 sleepwalk <- function( embeddings, featureMatrices = NULL, maxdists = NULL, pointSize = 1.5, titles = NULL,
                        distances = NULL, same = c( "objects", "features" ), compare = c("embeddings", "distances"),
-                       saveToFile = NULL, ncol = NULL, nrow = NULL, on_selection = NULL) {
+                       saveToFile = NULL, ncol = NULL, nrow = NULL, on_selection = NULL, mode = c("canvas", "svg")) {
   same = match.arg( same )
   compare = match.arg( compare )
+  mode = match.arg( mode )
   
   if(is.null(featureMatrices)) {
     if(same == "features")
@@ -122,8 +128,10 @@ sleepwalk <- function( embeddings, featureMatrices = NULL, maxdists = NULL, poin
   rm(list = ls(envir = .slw), envir = .slw)
   if(is.null(on_selection)) {
     .slw$on_selection <- function(points, emb) {
-      message(paste0("You've selected ", length(points), " points from the embedding ", emb, "."))
-      message(paste0("The indices of the selected points are now stored in the variable 'selPoints'."))
+      if(length(points) > 0){
+        message(paste0("You've selected ", length(points), " points from the embedding ", emb, "."))
+        message(paste0("The indices of the selected points are now stored in the variable 'selPoints'."))
+      }
     }
   } else {
     stopifnot(is.function(on_selection))
@@ -219,7 +227,7 @@ sleepwalk <- function( embeddings, featureMatrices = NULL, maxdists = NULL, poin
   }
   
   if(is.null(saveToFile)) {
-    jrc::openPage( FALSE, system.file( package="sleepwalk" ), "sleepwalk.html" )
+    jrc::openPage( FALSE, system.file( package="sleepwalk" ), paste0("sleepwalk_", mode, ".html") )
     
     if( same == "objects" ) 
       jrc::sendData( "mode", "A" )
@@ -243,7 +251,7 @@ sleepwalk <- function( embeddings, featureMatrices = NULL, maxdists = NULL, poin
     jrc::sendData( "compare", compare )
     jrc::sendCommand( "set_up_chart()" )
   } else {
-    content <- readLines(paste0(system.file( package="sleepwalk" ), "/", "sleepwalk.html"), warn = F)
+    content <- readLines(paste0(system.file( package="sleepwalk" ), "/",  paste0("sleepwalk_", mode, ".html")), warn = F)
     
     while(sum(grepl("script src", content)) != 0) {
       i <- which(grepl("script src", content))[1]
@@ -349,8 +357,7 @@ slw_snapshot <- function(point, emb = 1, returnList = FALSE) {
             axis.text = element_blank(), axis.ticks = element_blank(), panel.grid.minor = element_blank(),
             legend.position = "bottom", legend.title = element_blank()) + guides(colour = guide_colourbar(barwidth = 15, barheight = 0.5))
   } else {
-    plots <- list()
-    for(i in 1:n_charts) {
+    plots <- lapply(1:n_charts, function(i) {
       if(is.list(en$embs)) {
         data <- as.data.frame(en$embs[[i]])
       } else {
@@ -369,13 +376,13 @@ slw_snapshot <- function(point, emb = 1, returnList = FALSE) {
           md <- maxdists[i]
         }
       }
-      plots[[i]] <- ggplot() + geom_point(aes(x = data$x1, y = data$x2, colour = data$dists), size = en$pointSize/2) +
+      ggplot() + geom_point(aes(x = data$x1, y = data$x2, colour = data$dists), size = en$pointSize/2) +
         scale_color_gradientn(colours = colours, limits = c(0, md), oob = squish) +
         ggtitle(en$titles[i]) +
         theme(axis.title = element_blank(), axis.line = element_blank(), panel.grid.major = element_blank(),
               axis.text = element_blank(), axis.ticks = element_blank(), panel.grid.minor = element_blank(),
               legend.position = "bottom", legend.title = element_blank()) + guides(colour = guide_colourbar(barwidth = 15, barheight = 0.5))
-    }
+    })
     if(returnList) {
       plots
     } else {
