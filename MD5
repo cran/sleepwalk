@@ -1,12 +1,12 @@
-53066378bc1f63fcb6b33948e26136b5 *DESCRIPTION
+52f2f0f9f3c29bdadc12bf6d54f7b71b *DESCRIPTION
 ab4cd500faff0590247d59df626eadfc *NAMESPACE
-02a040252a9a1d92a408f6cfc4e633b5 *NEWS.md
-adaece3b0f4cb31a9b0aaed3ed51854b *R/sleepwalk.R
+8a3fc41940542099843187018d122c56 *NEWS.md
+8d4a88a7e6b71b92ca5fc87204ee9782 *R/sleepwalk.R
 76b2e59a57963e8422f48098312819cf *inst/d3-lasso.min.js
 0589331f8f4bf99216faa31d79cc6d09 *inst/d3.v5.min.js
 b11c97ca0247d6fbde029a84e1f09988 *inst/lasso.js
-9629d120e207e6f628e55cc10db60623 *inst/sleepwalk_canvas.html
+59e485f82a60468fea1d43a762719753 *inst/sleepwalk_canvas.html
 acb75a0d9bdfd3b6d56a42ded4d38174 *inst/sleepwalk_svg.html
 667906e8e6607c480a8ebf8d8a644496 *man/dot-slw.Rd
-e18727b2c6658f1ffc745935609c9208 *man/sleepwalk.Rd
+96e319d3f2b07cd58fd4d6433622e48a *man/sleepwalk.Rd
 7b8b900a3a4d660a67a3e8a9ce5a70a3 *man/slw_snapshot.Rd
