@@ -79,7 +79,7 @@
 #' 
 #' @author Simon Anders, Svetlana Ovchinnikova
 #' 
-#' @references \url{https://doi.org/10.1101/603589}
+#' @references \doi{10.1101/603589}
 #'
 #' @examples 
 #' #generate cockscrew-shaped 3D data with 3 additional noisy dimensions
@@ -254,7 +254,7 @@ sleepwalk <- function( embeddings, featureMatrices = NULL, maxdists = NULL, poin
     jrc::openPage( useViewer = FALSE, 
                    rootDirectory = system.file( package="sleepwalk" ),
                    startPage = paste0(system.file( package="sleepwalk" ),"/sleepwalk_", mode, ".html"), ... )
-    jrc::limitStorage(n = 0)
+    jrc::setLimits(storedMsg = 0)
     jrc::allowFunctions(c("message", ".slw$on_selection"))
     jrc::allowVariables(c("embs", "dists", "pointSize", "maxdists", "titles", "finished"))
     
